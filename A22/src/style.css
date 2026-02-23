@@ -50,7 +50,9 @@ input {
 
 
 canvas {
-  margin-top: 20px;
+  margin-top: 10px;
+  width: 800px;
+  height: 800px;
   border: 1px solid #ccc;
   background: white;
 }
