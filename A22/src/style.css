@@ -2,46 +2,79 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   background: #f4f4f4;
+  margin: 0;
+  padding: 20px;
 }
 
 h1 {
   color: black;
+  margin-bottom: 30px;
 }
 
-.inputs {
-  margin: 20px;
+
+.input {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
+
+
+.input div {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+}
+
+
+label {
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
 
 input {
   padding: 8px;
-  margin: 5px;
+  width: 120px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-button {
-  padding: 10px 15px;
-  background: black;
-  border: none;
-  color: white;
-  cursor: pointer;
+
+#result {
+  margin: 20px;
+  font-size: 18px;
+  font-weight: bold;
 }
+
 
 canvas {
   margin-top: 20px;
   border: 1px solid #ccc;
   background: white;
 }
-.inputs {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-.inputa {
-  display: flex;
-  flex-direction: column;  /* THIS makes label go above */
-  align-items: center;
+
+#solveclick {
+  padding: 12px 25px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
 }
 
-label {
-  margin-bottom: 5px;
-  font-weight: bold;
+
+#solveclick:hover {
+  background: #333;
+  transform: scale(1.05);
+}
+
+
+#solveclick:active {
+  transform: scale(0.98);
 }
