@@ -1,6 +1,4 @@
 import "./style.css";
-// src/main.ts
-
 const aInput = document.getElementById('a') as HTMLInputElement;
 const bInput = document.getElementById('b') as HTMLInputElement;
 const cInput = document.getElementById('c') as HTMLInputElement;
@@ -49,7 +47,12 @@ function solveCubic(a: number, b: number, c: number, d: number): number[] {
   return roots;
 }
 
-// Compute discriminant Δ
+function q(a: number, b:number, c: number, d: number){
+  return roundTenth((27*a**2*d - 9*a*b*c + 2*b**3)/(27*a**3))
+}
+function p(a: number, b:number, c: number, d: number){
+  return roundTenth((3*a*c-b*b)/(3*a**2))
+}
 function discriminant(a: number, b: number, c: number, d: number): number {
   return roundTenth(18*a*b*c*d - 4*b**3*d + b**2*c**2 - 4*a*c**3 - 27*a**2*d**2);
 }
@@ -59,8 +62,8 @@ function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // CSS grid is already visible via background-image
-  const scaleX = 20; // grid matches 20px per unit
-  const scaleY = 20;
+  const scaleX = 19; 
+  const scaleY = 19;
 
   // Draw axes in black on top of grid
   ctx.strokeStyle = "black";
@@ -108,6 +111,8 @@ solveButton.addEventListener('click', () => {
 
   const roots = solveCubic(a, b, c, d);
   const delta = discriminant(a, b, c, d);
+  const qv = q(a,b,c,d)
+  const pv = p(a,b,c,d)
 
   // Display equation, discriminant, roots in a box to the right
   resultDiv.innerHTML = `
@@ -123,6 +128,8 @@ solveButton.addEventListener('click', () => {
       <div><strong>Equation:</strong> ${a}x³ + ${b}x² + ${c}x + ${d} = 0</div>
       <div><strong>Discriminant:</strong> ${delta}</div>
       <div><strong>Roots:</strong> ${roots.join(', ')}</div>
+      <div><strong>q:<strong> ${qv}
+      <div><strong>q:<strong> ${pv}
     </div>
   `;
 

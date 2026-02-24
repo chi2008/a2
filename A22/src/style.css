@@ -37,7 +37,7 @@ label {
 input {
   padding: 8px;
   width: 120px;
-  border: 1px solid #ccc;
+  border: 1px solid black;
   border-radius: 4px;
 }
 
@@ -50,17 +50,20 @@ input {
 
 
 canvas {
+  position: static;
   margin-top: 10px;
-  width: 800px;
-  height: 800px;
-  border: 1px solid #ccc;
+  width: 600px;
+  height: 600px;
+  border: none;
   background: white;
+  bottom: 10px;
+  right: 10px;
 
   /* Add grid */
   background-image:
     linear-gradient(to right, #ddd 1px, transparent 1px),
     linear-gradient(to bottom, #ddd 1px, transparent 1px);
-  background-size: 25px 25px; /* grid size: 20px */
+  background-size: 20px 20px; /* grid size: 20px */
 }
 
 #solveclick {
