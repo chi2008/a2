@@ -1,53 +1,70 @@
-import './style.css'
+import "./style.css";
 // src/main.ts
-const aInput = document.getElementById("a") as HTMLInputElement;
-const bInput = document.getElementById("b") as HTMLInputElement;
-const cInput = document.getElementById("c") as HTMLInputElement;
-const dInput = document.getElementById("d") as HTMLInputElement;
-const solveButton = document.getElementById("solveclick") as HTMLButtonElement;
-const resultDiv = document.getElementById("result") as HTMLDivElement;
-const canvas = document.getElementById("graph") as HTMLCanvasElement;
-const ctx = canvas.getContext("2d")!;
 
-// Solve cubic using Cardano's formula
+const aInput = document.getElementById('a') as HTMLInputElement;
+const bInput = document.getElementById('b') as HTMLInputElement;
+const cInput = document.getElementById('c') as HTMLInputElement;
+const dInput = document.getElementById('d') as HTMLInputElement;
+const solveButton = document.getElementById('solveclick') as HTMLButtonElement;
+const resultDiv = document.getElementById('result') as HTMLDivElement;
+const canvas = document.getElementById('graph') as HTMLCanvasElement;
+const ctx = canvas.getContext('2d')!;
+
+// Round to nearest tenth
+function roundTenth(num: number): number {
+  return Math.round(num * 10) / 10;
+}
+
+// Solve cubic equation using Cardano's formula
 function solveCubic(a: number, b: number, c: number, d: number): number[] {
-  if (a === 0) return []; // Not cubic
-  // Normalize
-  const p = (3 * a * c - b * b) / (3 * a * a);
-  const q = (2 * b * b * b - 9 * a * b * c + 27 * a * a * d) / (27 * a * a * a);
-  const discriminant = (q * q) / 4 + (p * p * p) / 27;
+  if (a === 0) return [];
+
+  const f = ((3 * a * c) - (b ** 2)) / (3 * a ** 2);
+  const g = ((2 * b ** 3) - (9 * a * b * c) + (27 * a ** 2 * d)) / (27 * a ** 3);
+  const h = (g ** 2) / 4 + (f ** 3) / 27;
 
   const roots: number[] = [];
 
-  if (discriminant > 0) {
-    // One real root
-    const u = Math.cbrt(-q / 2 + Math.sqrt(discriminant));
-    const v = Math.cbrt(-q / 2 - Math.sqrt(discriminant));
-    roots.push(u + v - b / (3 * a));
-  } else if (discriminant === 0) {
-    const u = Math.cbrt(-q / 2);
-    roots.push(2 * u - b / (3 * a));
-    roots.push(-u - b / (3 * a));
+  if (h > 0) {
+    const R = -(g / 2) + Math.sqrt(h);
+    const S = Math.cbrt(R);
+    const T = -(g / 2) - Math.sqrt(h);
+    const U = Math.cbrt(T);
+    roots.push(roundTenth(S + U - b/(3*a)));
+  } else if (f === 0 && g === 0 && h === 0) {
+    const x = -Math.cbrt(d / a);
+    roots.push(roundTenth(x), roundTenth(x), roundTenth(x));
   } else {
-    // Three real roots
-    const r = Math.sqrt(-p * p * p / 27);
-    const phi = Math.acos(-q / (2 * r));
-    const t = 2 * Math.cbrt(r);
-    roots.push(t * Math.cos(phi / 3) - b / (3 * a));
-    roots.push(t * Math.cos((phi + 2 * Math.PI) / 3) - b / (3 * a));
-    roots.push(t * Math.cos((phi + 4 * Math.PI) / 3) - b / (3 * a));
+    const i = Math.sqrt((g ** 2)/4 - h);
+    const j = Math.cbrt(i);
+    const k = Math.acos(-(g/(2*i)));
+    const L = -j;
+    const P = -b/(3*a);
+    roots.push(
+      roundTenth(2*j*Math.cos(k/3) - b/(3*a)),
+      roundTenth(L*(Math.cos(k/3) + Math.sqrt(3)*Math.sin(k/3)) + P),
+      roundTenth(L*(Math.cos(k/3) - Math.sqrt(3)*Math.sin(k/3)) + P)
+    );
   }
-
   return roots;
 }
 
-// Draw cubic graph
-function drawCubic(a: number, b: number, c: number, d: number) {
+// Compute discriminant Δ
+function discriminant(a: number, b: number, c: number, d: number): number {
+  return roundTenth(18*a*b*c*d - 4*b**3*d + b**2*c**2 - 4*a*c**3 - 27*a**2*d**2);
+}
+
+// Draw cubic curve and axes matching CSS grid
+function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Draw axes
+  // CSS grid is already visible via background-image
+  const scaleX = 20; // grid matches 20px per unit
+  const scaleY = 20;
+
+  // Draw axes in black on top of grid
   ctx.strokeStyle = "#000";
-  ctx.lineWidth = 1;
+  ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(0, canvas.height / 2);
   ctx.lineTo(canvas.width, canvas.height / 2);
@@ -55,35 +72,58 @@ function drawCubic(a: number, b: number, c: number, d: number) {
   ctx.lineTo(canvas.width / 2, canvas.height);
   ctx.stroke();
 
-  // Plot cubic
+  // Draw cubic curve
   ctx.strokeStyle = "red";
   ctx.lineWidth = 2;
   ctx.beginPath();
-  const scaleX = 20; // pixels per x unit
-  const scaleY = 20; // pixels per y unit
-  for (let px = 0; px <= canvas.width; px++) {
-    const x = (px - canvas.width / 2) / scaleX;
-    const y = a * x ** 3 + b * x ** 2 + c * x + d;
-    const py = canvas.height / 2 - y * scaleY;
-    if (px === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
+  for (let px = -canvas.width/2; px < canvas.width/2; px += 0.5) {
+    const x = px / scaleX;
+    const y = a*x**3 + b*x**2 + c*x + d;
+    const py = -y * scaleY;
+    if (px === -canvas.width/2) ctx.moveTo(canvas.width/2 + px, canvas.height/2 + py);
+    else ctx.lineTo(canvas.width/2 + px, canvas.height/2 + py);
   }
   ctx.stroke();
+
+  // Draw roots as blue dots
+  ctx.fillStyle = "blue";
+  roots.forEach(r => {
+    ctx.beginPath();
+    ctx.arc(canvas.width/2 + r*scaleX, canvas.height/2, 4, 0, 2*Math.PI);
+    ctx.fill();
+  });
 }
 
-// Handle button click
-solveButton.addEventListener("click", () => {
+// Handle solve button click
+solveButton.addEventListener('click', () => {
   const a = parseFloat(aInput.value);
   const b = parseFloat(bInput.value);
   const c = parseFloat(cInput.value);
   const d = parseFloat(dInput.value);
 
   if (isNaN(a) || isNaN(b) || isNaN(c) || isNaN(d)) {
-    resultDiv.textContent = "Please enter all coefficients.";
+    alert("Please enter all coefficients.");
     return;
   }
 
   const roots = solveCubic(a, b, c, d);
-  resultDiv.textContent = `Roots: ${roots.map(r => r.toFixed(4)).join(", ")}`;
-  drawCubic(a, b, c, d);
+  const delta = discriminant(a, b, c, d);
+
+  // Display equation, discriminant, roots in a box to the right
+  resultDiv.innerHTML = `
+    <div style="
+      display:inline-block;
+      text-align:left;
+      border:1px solid black;
+      padding:12px;
+      margin-left:20px;
+      vertical-align:top;
+    ">
+      <div><strong>Equation:</strong> ${a}x³ + ${b}x² + ${c}x + ${d} = 0</div>
+      <div><strong>Discriminant:</strong> ${delta}</div>
+      <div><strong>Roots:</strong> ${roots.join(', ')}</div>
+    </div>
+  `;
+
+  drawCubic(a, b, c, d, roots);
 });

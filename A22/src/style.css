@@ -55,6 +55,12 @@ canvas {
   height: 800px;
   border: 1px solid #ccc;
   background: white;
+
+  /* Add grid */
+  background-image:
+    linear-gradient(to right, #ddd 1px, transparent 1px),
+    linear-gradient(to bottom, #ddd 1px, transparent 1px);
+  background-size: 20px 20px; /* grid size: 20px */
 }
 
 #solveclick {
