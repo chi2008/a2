@@ -63,8 +63,8 @@ function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) 
   const scaleY = 20;
 
   // Draw axes in black on top of grid
-  ctx.strokeStyle = "#000";
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(0, canvas.height / 2);
   ctx.lineTo(canvas.width, canvas.height / 2);
@@ -74,7 +74,7 @@ function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) 
 
   // Draw cubic curve
   ctx.strokeStyle = "red";
-  ctx.lineWidth = 2;
+  ctx.lineWidth = 1;
   ctx.beginPath();
   for (let px = -canvas.width/2; px < canvas.width/2; px += 0.5) {
     const x = px / scaleX;
@@ -114,7 +114,8 @@ solveButton.addEventListener('click', () => {
     <div style="
       display:inline-block;
       text-align:left;
-      border:1px solid black;
+      color:orange;
+      border:none;
       padding:12px;
       margin-left:20px;
       vertical-align:top;
