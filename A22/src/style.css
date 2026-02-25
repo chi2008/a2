@@ -89,3 +89,29 @@ canvas {
 #solveclick:active {
   transform: scale(0.98);
 }
+.result-box {
+  width: 220px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  padding: 10px 0;
+  font-family: Arial, sans-serif;
+}
+
+.result-box .row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 15px;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.result-box .row:last-child {
+  border-bottom: none;
+}
+
+.result-box .header {
+  background-color: orange;
+  color: white;
+  font-weight: bold;
+}

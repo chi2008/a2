@@ -8,7 +8,6 @@ const resultDiv = document.getElementById('result') as HTMLDivElement;
 const canvas = document.getElementById('graph') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d')!;
 
-// Round to nearest tenth
 function roundTenth(num: number): number {
   return Math.round(num * 10) / 10;
 }
@@ -56,12 +55,15 @@ function p(a: number, b:number, c: number, d: number){
 function discriminant(a: number, b: number, c: number, d: number): number {
   return roundTenth(18*a*b*c*d - 4*b**3*d + b**2*c**2 - 4*a*c**3 - 27*a**2*d**2);
 }
+function y(a: number, b: number, c: number, d: number, x: number): number {
+  return roundTenth(a*x**3 + b*x**2 + c*x + d);
+}
 
 // Draw cubic curve and axes matching CSS grid
 function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // CSS grid is already visible via background-image
+  
   const scaleX = 19; 
   const scaleY = 19;
 
@@ -116,7 +118,7 @@ solveButton.addEventListener('click', () => {
 
   // Display equation, discriminant, roots in a box to the right
   resultDiv.innerHTML = `
-    <div style="
+   <div style="
       display:inline-block;
       text-align:left;
       color:orange;
@@ -128,10 +130,39 @@ solveButton.addEventListener('click', () => {
       <div><strong>Equation:</strong> ${a}x³ + ${b}x² + ${c}x + ${d} = 0</div>
       <div><strong>Discriminant:</strong> ${delta}</div>
       <div><strong>Roots:</strong> ${roots.join(', ')}</div>
-      <div><strong>q:<strong> ${qv}
-      <div><strong>q:<strong> ${pv}
+      <div><strong>q:</strong> ${qv}</div>
+      <div><strong>p:</strong> ${pv}</div>
     </div>
   `;
+resultDiv.innerHTML = `
+  <div style="
+      display:inline-block;
+      text-align:left;
+      color:black;
+      border:none;
+      padding:12px;
+      margin-left:20px;
+      vertical-align:top;
+    ">
+  <div class="result-box">
+    <div class="row"><span>p</span><span>${pv}</span></div>
+    <div class="row"><span>q</span><span>${qv}</span></div>
+    <div class="row"><span>Discriminant</span><span>${delta}</span></div>
 
+    <div class="row header">
+      <span>Value</span>
+      <span>x</span>
+      <span>y</span>
+    </div>
+
+    ${roots.map((r, i) => `
+      <div class="row">
+        <span>${i + 1}</span>
+        <span>${r}</span>
+        <span>${y(a,b,c,d,r)}</span>
+      </div>
+    `).join("")}
+  </div>
+`;
   drawCubic(a, b, c, d, roots);
 });
