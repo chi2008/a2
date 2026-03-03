@@ -12,7 +12,6 @@ function roundTenth(num: number): number {
   return Math.round(num * 10) / 10;
 }
 
-// Solve cubic equation using Cardano's formula
 function solveCubic(a: number, b: number, c: number, d: number): number[] {
   if (a === 0) return [];
 
@@ -59,7 +58,6 @@ function y(a: number, b: number, c: number, d: number, x: number): number {
   return roundTenth(a*x**3 + b*x**2 + c*x + d);
 }
 
-// Draw cubic curve and axes matching CSS grid
 function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -67,7 +65,7 @@ function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) 
   const scaleX = 19; 
   const scaleY = 19;
 
-  // Draw axes in black on top of grid
+
   ctx.strokeStyle = "black";
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -77,7 +75,6 @@ function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) 
   ctx.lineTo(canvas.width / 2, canvas.height);
   ctx.stroke();
 
-  // Draw cubic curve
   ctx.strokeStyle = "red";
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -90,7 +87,6 @@ function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) 
   }
   ctx.stroke();
 
-  // Draw roots as blue dots
   ctx.fillStyle = "blue";
   roots.forEach(r => {
     ctx.beginPath();
@@ -99,7 +95,6 @@ function drawCubic(a: number, b: number, c: number, d: number, roots: number[]) 
   });
 }
 
-// Handle solve button click
 solveButton.addEventListener('click', () => {
   const a = parseFloat(aInput.value);
   const b = parseFloat(bInput.value);
@@ -116,7 +111,6 @@ solveButton.addEventListener('click', () => {
   const qv = q(a,b,c,d)
   const pv = p(a,b,c,d)
 
-  // Display equation, discriminant, roots in a box to the right
   resultDiv.innerHTML = `
    <div style="
       display:inline-block;
