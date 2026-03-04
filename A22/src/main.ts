@@ -138,6 +138,7 @@ resultDiv.innerHTML = `
       margin-left:20px;
       vertical-align:top;
     ">
+      <div><strong>Equation:</strong> ${a}x³ + ${b}x² + ${c}x + ${d} = 0</div>
   <div class="result-box">
     <div class="row"><span>p</span><span>${pv}</span></div>
     <div class="row"><span>q</span><span>${qv}</span></div>
