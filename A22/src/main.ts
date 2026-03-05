@@ -109,7 +109,7 @@ solveButton.addEventListener('click', () => {
   const roots = solveCubic(a, b, c, d);
   const delta = discriminant(a, b, c, d);
   const qv = q(a,b,c,d)
-  const pv = p(a,b,c,d)
+  const pv = p(a,b,c)
 
 resultDiv.innerHTML = `
   <div style="
