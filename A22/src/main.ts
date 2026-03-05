@@ -48,7 +48,7 @@ function solveCubic(a: number, b: number, c: number, d: number): number[] {
 function q(a: number, b:number, c: number, d: number){
   return roundTenth((27*a**2*d - 9*a*b*c + 2*b**3)/(27*a**3))
 }
-function p(a: number, b:number, c: number, d: number){
+function p(a: number, b:number, c: number){
   return roundTenth((3*a*c-b*b)/(3*a**2))
 }
 function discriminant(a: number, b: number, c: number, d: number): number {
@@ -111,23 +111,6 @@ solveButton.addEventListener('click', () => {
   const qv = q(a,b,c,d)
   const pv = p(a,b,c,d)
 
-  resultDiv.innerHTML = `
-   <div style="
-      display:inline-block;
-      text-align:left;
-      color:orange;
-      border:none;
-      padding:12px;
-      margin-left:20px;
-      vertical-align:top;
-    ">
-      <div><strong>Equation:</strong> ${a}x³ + ${b}x² + ${c}x + ${d} = 0</div>
-      <div><strong>Discriminant:</strong> ${delta}</div>
-      <div><strong>Roots:</strong> ${roots.join(', ')}</div>
-      <div><strong>q:</strong> ${qv}</div>
-      <div><strong>p:</strong> ${pv}</div>
-    </div>
-  `;
 resultDiv.innerHTML = `
   <div style="
       display:inline-block;
